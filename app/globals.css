@@ -1,26 +1,184 @@
 @import "tailwindcss";
 
+/* ── Design Tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #fafafa;
+  --ink: #11131a;
+  --muted: #6b7280;
+  --accent: #3654ff;
+  --accent-hover: #2a45e0;
+  --accent-soft: #eef1ff;
+  --line: #e5e7eb;
 }
 
+/* ── Tailwind v4 Theme Extension ── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-line: var(--line);
+
+  --font-display: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base Styles ── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Typography Scale ── */
+h1 {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ── Label / Mono Utility ── */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+/* ── Focus Visible ── */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Section Divider ── */
+.section-divider {
+  border-top: 1px solid var(--line);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: var(--accent-soft);
+  color: var(--ink);
+}
+
+/* ── Background Grid & Visual Effects ── */
+.bg-grid-pattern {
+  background-size: 44px 44px;
+  background-image: 
+    linear-gradient(to right, rgba(54, 84, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(54, 84, 255, 0.06) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(54, 84, 255, 0.18) 1.2px, transparent 1.2px);
+}
+
+.mask-radial-faded {
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, #000 35%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, #000 35%, transparent 85%);
+}
+
+.bg-theme-mesh {
+  background: 
+    radial-gradient(ellipse 90% 60% at 50% -15%, rgba(54, 84, 255, 0.16) 0%, rgba(54, 84, 255, 0.04) 50%, transparent 100%),
+    radial-gradient(circle at 10% 40%, rgba(54, 84, 255, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 90% 40%, rgba(99, 102, 241, 0.06) 0%, transparent 40%);
+}
+
+.bg-spotlight {
+  background: radial-gradient(700px circle at 50% 0%, rgba(54, 84, 255, 0.18), transparent 70%);
+}
+
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 25s linear infinite;
+}
+
+
+/* ── Responsive H1/H2 ── */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 36px;
+    line-height: 1.1;
+  }
+  h2 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 28px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+}
+

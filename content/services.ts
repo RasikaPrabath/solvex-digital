@@ -1,0 +1,118 @@
+import { Service } from "@/lib/types";
+
+export const services: Service[] = [
+  {
+    slug: "business-process-software",
+    icon: "Workflow",
+    title: "Business Process Software",
+    tagline: "Replace spreadsheets and manual steps with software that works the way you do.",
+    problem:
+      "Your team wastes hours on repetitive tasks — copying data between spreadsheets, chasing approvals over email, juggling disconnected tools. These broken workflows cost real money and create real frustration.",
+    deliverables: [
+      "Process audit and workflow mapping",
+      "Custom internal tool design and build",
+      "Integration with existing systems (CRM, ERP, accounting)",
+      "Role-based access and approval flows",
+      "Dashboard and reporting",
+      "Training and handover documentation",
+    ],
+    stack: ["Next.js", "ASP.NET Core", "PostgreSQL", "Redis", "Azure"],
+    timeline: "4–8 weeks for core system",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
+  },
+  {
+    slug: "web-application-development",
+    icon: "Globe",
+    title: "Web Application Development",
+    tagline: "Production-grade web applications that scale with your business.",
+    problem:
+      "Off-the-shelf SaaS tools don't fit your exact needs, and cobbling together no-code solutions leads to brittle, hard-to-maintain systems. You need software built around your business logic, not the other way around.",
+    deliverables: [
+      "Full-stack web application (frontend + API + database)",
+      "Responsive, accessible UI built to your brand",
+      "Authentication and authorization",
+      "Third-party API integrations",
+      "Performance optimization and caching",
+      "CI/CD pipeline and deployment",
+    ],
+    stack: ["React", "Next.js", "Node.js", "PostgreSQL", "AWS"],
+    timeline: "3–6 weeks for MVP",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
+  },
+  {
+    slug: "mobile-app-development",
+    icon: "Smartphone",
+    title: "Mobile App Development",
+    tagline: "Cross-platform mobile apps with native performance.",
+    problem:
+      "Your customers expect a mobile experience, but building separate iOS and Android apps doubles your development cost and timeline. You need a single codebase that delivers a native feel on both platforms.",
+    deliverables: [
+      "Cross-platform mobile app (iOS + Android)",
+      "Offline-first architecture where needed",
+      "Push notifications and deep linking",
+      "App store submission and optimization",
+      "Backend API development",
+      "Analytics and crash reporting integration",
+    ],
+    stack: ["React Native", "Expo", "Node.js", "PostgreSQL", "Firebase"],
+    timeline: "4–8 weeks for MVP",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=80",
+  },
+  {
+    slug: "api-backend-development",
+    icon: "Server",
+    title: "API & Backend Development",
+    tagline: "Reliable, documented APIs that power your products.",
+    problem:
+      "Your frontend team is blocked by a slow or poorly structured backend. Your mobile apps, partner integrations, and internal tools all need consistent, well-documented APIs — and they need them built right the first time.",
+    deliverables: [
+      "RESTful or GraphQL API design and development",
+      "Database schema design and optimization",
+      "Authentication (OAuth, JWT, API keys)",
+      "Rate limiting and security hardening",
+      "API documentation (OpenAPI/Swagger)",
+      "Automated testing and monitoring",
+    ],
+    stack: ["ASP.NET Core", "Node.js", "PostgreSQL", "Redis", "Docker"],
+    timeline: "2–4 weeks for core API",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80",
+  },
+  {
+    slug: "ui-ux-design",
+    icon: "Palette",
+    title: "UI/UX Design",
+    tagline: "Interfaces that make complex software feel simple.",
+    problem:
+      "Powerful software is useless if people can't figure out how to use it. Your users abandon workflows, submit support tickets, and work around your tool instead of with it — all because the interface doesn't match their mental model.",
+    deliverables: [
+      "User research and persona development",
+      "Information architecture and user flows",
+      "Wireframes and interactive prototypes",
+      "High-fidelity UI design (Figma)",
+      "Design system and component library",
+      "Usability testing and iteration",
+    ],
+    stack: ["Figma", "Framer", "Storybook", "React"],
+    timeline: "2–3 weeks for design phase",
+    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&auto=format&fit=crop&q=80",
+  },
+  {
+    slug: "cloud-deployment-maintenance",
+    icon: "Cloud",
+    title: "Cloud Deployment & Maintenance",
+    tagline: "Ship confidently. Sleep peacefully.",
+    problem:
+      "Deploying is a nerve-wracking manual process. You're never sure if the next release will break something, and when it does, rolling back takes hours. Your infrastructure wasn't designed for the traffic you're getting.",
+    deliverables: [
+      "Cloud infrastructure setup (AWS, Azure, or GCP)",
+      "CI/CD pipeline configuration",
+      "Container orchestration (Docker, Kubernetes)",
+      "Monitoring, alerting, and logging",
+      "SSL, backups, and disaster recovery",
+      "Ongoing maintenance and support retainer",
+    ],
+    stack: ["AWS", "Azure", "Docker", "Kubernetes", "Terraform"],
+    timeline: "1–2 weeks for initial setup + ongoing",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80",
+  },
+];

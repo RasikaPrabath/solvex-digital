@@ -60,21 +60,21 @@ export default function Hero() {
 
   return (
     <section
-      className="relative pt-28 pb-6 sm:pt-32 sm:pb-12 md:pt-36 md:pb-14 lg:pt-40 lg:pb-16 overflow-hidden bg-white select-none min-h-0 sm:min-h-[85vh] flex flex-col justify-center"
+      className="relative pt-20 pb-4 sm:pt-32 sm:pb-12 md:pt-36 md:pb-14 lg:pt-40 lg:pb-16 overflow-hidden bg-white select-none min-h-0 sm:min-h-[85vh] flex flex-col justify-center"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ perspective: "1400px" }}
     >
       <div className="w-full relative z-10 flex flex-col items-center">
 
-        {/* ── HERO DISPLAY STAGE COMFORTABLY CENTERED ── */}
+        {/* ── HERO DISPLAY STAGE ── */}
         <motion.div
           style={{
             rotateX: rotateX,
             rotateY: rotateY,
             transformStyle: "preserve-3d",
           }}
-          className="relative w-full max-w-[100vw] flex items-center justify-center my-0 mt-2 sm:mt-1 min-h-[160px] sm:min-h-[260px] md:min-h-[320px] lg:min-h-[380px] overflow-visible"
+          className="relative w-full max-w-[100vw] flex items-center justify-center my-0 mt-0 sm:mt-1 min-h-[160px] sm:min-h-[260px] md:min-h-[320px] lg:min-h-[380px] overflow-visible"
         >
 
           {/* ── CARD 1: LEFT 3D GLASS CARD ── */}
@@ -190,7 +190,7 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* ── PRISTINE ENTERPRISE TYPOGRAPHY (INTER TIGHT / GEIST WEIGHT 700) ── */}
+          {/* ── PRISTINE ENTERPRISE TYPOGRAPHY ── */}
           <div
             className="relative z-20 w-full px-2 sm:px-6 flex justify-center items-center pointer-events-none"
             style={{ transform: "translateZ(20px)" }}

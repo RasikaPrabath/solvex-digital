@@ -17,21 +17,26 @@ export default function TeamPage() {
           <span
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-neutral-100 text-neutral-800 border border-neutral-200/60 mb-3"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             }}
           >
             Engineering Team
           </span>
           <h1
-            className="text-3xl sm:text-4xl lg:text-[40px] font-semibold text-black tracking-[-0.025em] mb-4 leading-snug"
+            className="text-3xl sm:text-4xl lg:text-[40px] font-bold text-black tracking-[-0.03em] mb-4 leading-snug"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontWeight: 700,
             }}
           >
             The engineers behind Solvex
           </h1>
-          <p className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal">
+          <p
+            className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+            }}
+          >
             A small, senior studio. No junior handoffs or account managers in the way — you work directly with the architects who design the systems and write the code.
           </p>
         </div>

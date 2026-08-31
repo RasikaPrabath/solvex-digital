@@ -46,11 +46,11 @@ const pillars = [
 export default function WhyChooseUs() {
   return (
     <motion.section
-      className="py-14 sm:py-18 bg-white border-t border-neutral-100"
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+      className="py-16 sm:py-22 bg-white border-t border-neutral-100"
+      initial={{ opacity: 0, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
     >
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeading
@@ -63,26 +63,31 @@ export default function WhyChooseUs() {
           {pillars.map((pillar, i) => (
             <motion.div
               key={pillar.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="p-7 rounded-2xl border border-neutral-200/80 bg-neutral-50/40 hover:bg-white hover:border-black/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.03)] transition-all duration-300 group flex flex-col justify-between"
+              initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.25, 1, 0.5, 1] }}
+              className="p-7 rounded-2xl border border-neutral-200/80 bg-neutral-50/40 hover:bg-white hover:border-black/20 hover:shadow-[0_12px_35px_rgba(0,0,0,0.04)] transition-all duration-300 group flex flex-col justify-between"
             >
               <div>
                 <div className="w-10 h-10 rounded-xl bg-white border border-neutral-200 flex items-center justify-center mb-5 text-black group-hover:bg-black group-hover:text-white transition-all duration-200 shadow-2xs">
                   <pillar.icon className="w-4.5 h-4.5 transition-colors" />
                 </div>
                 <h3
-                  className="text-base sm:text-lg font-semibold text-black mb-2 tracking-tight"
+                  className="text-base sm:text-lg font-bold text-black mb-2 tracking-tight"
                   style={{
-                    fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                    fontWeight: 600,
+                    fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                    fontWeight: 700,
                   }}
                 >
                   {pillar.title}
                 </h3>
-                <p className="text-neutral-600 text-sm leading-relaxed font-normal">
+                <p
+                  className="text-neutral-600 text-sm leading-relaxed font-normal"
+                  style={{
+                    fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                  }}
+                >
                   {pillar.description}
                 </p>
               </div>

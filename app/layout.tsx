@@ -27,13 +27,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Urbanist:wght@700;800;900&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
+        <script src="/hydration-fix.js" />
       </head>
       <body className="min-h-screen flex flex-col antialiased" suppressHydrationWarning>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1" suppressHydrationWarning>{children}</main>
         <Footer />
       </body>
     </html>

@@ -27,15 +27,20 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <Badge tier={project.tier} />
         </div>
         <h3
-          className="text-lg font-semibold mb-1.5 text-black tracking-tight"
+          className="text-lg font-bold mb-1.5 text-black tracking-tight"
           style={{
-            fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-            fontWeight: 600,
+            fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+            fontWeight: 700,
           }}
         >
           {project.title}
         </h3>
-        <p className="text-neutral-600 text-sm leading-relaxed mb-4 font-normal">
+        <p
+          className="text-neutral-600 text-sm leading-relaxed mb-4 font-normal"
+          style={{
+            fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+          }}
+        >
           {project.tagline}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -43,6 +48,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             <span
               key={tech}
               className="px-2.5 py-0.5 text-xs font-medium text-neutral-700 bg-neutral-50 rounded-full border border-neutral-200 shadow-2xs"
+              style={{
+                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              }}
             >
               {tech}
             </span>

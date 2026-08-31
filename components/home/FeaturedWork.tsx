@@ -11,13 +11,13 @@ export default function FeaturedWork() {
 
   return (
     <motion.section
-      className="py-20 border-t border-line"
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+      className="py-20 border-t border-neutral-100 bg-white"
+      initial={{ opacity: 0, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
     >
-      <div className="max-w-[1200px] mx-auto px-6">
+      <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeading
           eyebrow="Our work"
           title="Projects we've built"
@@ -28,10 +28,10 @@ export default function FeaturedWork() {
           {featured.map((project, i) => (
             <motion.div
               key={project.slug}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
+              initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
             >
               <ProjectCard project={project} />
             </motion.div>

@@ -22,28 +22,33 @@ export default function ServicesPage() {
           <span
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-neutral-100 text-neutral-800 border border-neutral-200/60 mb-3"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             }}
           >
             Engineering Capabilities
           </span>
           <h1
-            className="text-3xl sm:text-4xl lg:text-[38px] font-semibold text-black tracking-[-0.02em] mb-4 leading-snug"
+            className="text-3xl sm:text-4xl lg:text-[38px] font-bold text-black tracking-[-0.03em] mb-4 leading-snug"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontWeight: 700,
             }}
           >
             Software engineered for real business outcomes
           </h1>
-          <p className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal">
+          <p
+            className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+            }}
+          >
             We focus on custom high-performance architecture. Every engagement starts with deep domain analysis, followed by rapid sprint execution.
           </p>
         </div>
 
         {/* Services List with Visual Previews */}
         <div className="space-y-10">
-          {services.map((service, i) => {
+          {services.map((service) => {
             const IconComponent = icons[service.icon] || LucideIcons.Code;
 
             return (
@@ -61,17 +66,22 @@ export default function ServicesPage() {
                         <IconComponent className="w-4.5 h-4.5" />
                       </div>
                       <h2
-                        className="text-xl font-semibold text-black tracking-tight"
+                        className="text-xl font-bold text-black tracking-tight"
                         style={{
-                          fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                          fontWeight: 600,
+                          fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                          fontWeight: 700,
                         }}
                       >
                         {service.title}
                       </h2>
                     </div>
 
-                    <p className="text-neutral-600 text-sm leading-relaxed font-normal">
+                    <p
+                      className="text-neutral-600 text-sm leading-relaxed font-normal"
+                      style={{
+                        fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                      }}
+                    >
                       {service.problem}
                     </p>
 
@@ -103,7 +113,7 @@ export default function ServicesPage() {
                         <h3
                           className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3"
                           style={{
-                            fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                            fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
                           }}
                         >
                           What&apos;s Included
@@ -113,6 +123,9 @@ export default function ServicesPage() {
                             <li
                               key={item}
                               className="flex items-start gap-2 text-sm text-neutral-700 font-normal"
+                              style={{
+                                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                              }}
                             >
                               <span className="w-3.5 h-3.5 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-0.5">
                                 <Check className="w-2 h-2" />
@@ -126,7 +139,7 @@ export default function ServicesPage() {
                         <h3
                           className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3"
                           style={{
-                            fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                            fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
                           }}
                         >
                           Production Stack
@@ -136,6 +149,9 @@ export default function ServicesPage() {
                             <span
                               key={tech}
                               className="px-3 py-1 text-xs font-medium text-neutral-700 bg-neutral-50 rounded-full border border-neutral-200 shadow-2xs"
+                              style={{
+                                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                              }}
                             >
                               {tech}
                             </span>

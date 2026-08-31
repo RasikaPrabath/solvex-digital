@@ -10,11 +10,11 @@ export default function ServicesPreview() {
 
   return (
     <motion.section
-      className="py-8 sm:py-16 md:py-20 bg-white"
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+      className="py-12 sm:py-18 md:py-22 bg-white"
+      initial={{ opacity: 0, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
     >
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeading
@@ -27,10 +27,10 @@ export default function ServicesPreview() {
           {previewServices.map((service, i) => (
             <motion.div
               key={service.slug}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
+              initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.25, 1, 0.5, 1] }}
             >
               <ServiceCard service={service} />
             </motion.div>

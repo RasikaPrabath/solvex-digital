@@ -134,7 +134,7 @@ export default function Footer() {
 
         {/* Bottom Bar: Ultra-clean & compact */}
         <div className="border-t border-neutral-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-500">
-          <p>&copy; {new Date().getFullYear()} Solvex. All rights reserved.</p>
+          <p suppressHydrationWarning>&copy; {new Date().getFullYear()} Solvex. All rights reserved.</p>
           <p className="text-neutral-600">We Solve. We Build. We Deliver.</p>
         </div>
       </div>

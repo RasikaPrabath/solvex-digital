@@ -38,21 +38,26 @@ export default function AboutPage() {
           <span
             className="inline-block px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-neutral-100 text-neutral-800 border border-neutral-200/60 mb-2.5"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             }}
           >
             About Us
           </span>
           <h1
-            className="text-3xl sm:text-4xl lg:text-[40px] font-semibold text-black tracking-[-0.025em] mb-4 leading-snug"
+            className="text-3xl sm:text-4xl lg:text-[40px] font-bold text-black tracking-[-0.03em] mb-4 leading-snug"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontWeight: 700,
             }}
           >
             Engineering mission-critical digital systems
           </h1>
-          <p className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal">
+          <p
+            className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+            }}
+          >
             We are a focused team of senior software engineers dedicated to turning complex business challenges into reliable, high-performance software.
           </p>
         </div>
@@ -77,47 +82,67 @@ export default function AboutPage() {
         <div className="grid lg:grid-cols-2 gap-10 mb-18 p-7 sm:p-10 rounded-3xl bg-neutral-50/50 border border-neutral-200/80">
           <div>
             <h2
-              className="text-xl font-semibold text-black mb-3.5 tracking-tight"
+              className="text-xl font-bold text-black mb-3.5 tracking-tight"
               style={{
-                fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                fontWeight: 700,
               }}
             >
               Why we started Solvex
             </h2>
-            <p className="text-neutral-600 leading-relaxed mb-3.5 text-sm sm:text-[15px] font-normal">
+            <p
+              className="text-neutral-600 leading-relaxed mb-3.5 text-sm sm:text-[15px] font-normal"
+              style={{
+                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              }}
+            >
               Traditional software agencies often overpromise, delegate work to inexperienced contractors, and deliver brittle code. Solvex was founded to change this.
             </p>
-            <p className="text-neutral-600 leading-relaxed text-sm sm:text-[15px] font-normal">
+            <p
+              className="text-neutral-600 leading-relaxed text-sm sm:text-[15px] font-normal"
+              style={{
+                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              }}
+            >
               We operate as a high-velocity extension of your executive leadership team — combining strategic domain architecture with flawless full-stack engineering.
             </p>
           </div>
           <div className="space-y-4">
             <div className="p-5 bg-white rounded-2xl border border-neutral-200/80 shadow-2xs">
               <h3
-                className="text-sm sm:text-base font-semibold text-black mb-1.5 tracking-tight"
+                className="text-sm sm:text-base font-bold text-black mb-1.5 tracking-tight"
                 style={{
-                  fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                  fontWeight: 600,
+                  fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                  fontWeight: 700,
                 }}
               >
                 Our Vision
               </h3>
-              <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed font-normal">
+              <p
+                className="text-neutral-600 text-xs sm:text-sm leading-relaxed font-normal"
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                }}
+              >
                 To be the most trusted technology engineering partner for organizations that demand precision, reliability, and security.
               </p>
             </div>
             <div className="p-5 bg-white rounded-2xl border border-neutral-200/80 shadow-2xs">
               <h3
-                className="text-sm sm:text-base font-semibold text-black mb-1.5 tracking-tight"
+                className="text-sm sm:text-base font-bold text-black mb-1.5 tracking-tight"
                 style={{
-                  fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                  fontWeight: 600,
+                  fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                  fontWeight: 700,
                 }}
               >
                 Our Delivery Commitment
               </h3>
-              <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed font-normal">
+              <p
+                className="text-neutral-600 text-xs sm:text-sm leading-relaxed font-normal"
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                }}
+              >
                 Deliver robust, clean software that scales seamlessly, respecting your time, budget, and strategic milestones.
               </p>
             </div>
@@ -130,16 +155,16 @@ export default function AboutPage() {
             <span
               className="inline-block px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-neutral-100 text-neutral-800 border border-neutral-200/60 mb-2.5"
               style={{
-                fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
               }}
             >
               Enterprise Standards
             </span>
             <h2
-              className="text-2xl sm:text-3xl font-semibold text-black tracking-tight"
+              className="text-2xl sm:text-3xl font-bold text-black tracking-tight"
               style={{
-                fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                fontWeight: 700,
               }}
             >
               What sets Solvex apart
@@ -157,15 +182,20 @@ export default function AboutPage() {
                     <item.icon className="w-4.5 h-4.5" />
                   </div>
                   <h3
-                    className="text-base sm:text-lg font-semibold text-black mb-2 tracking-tight"
+                    className="text-base sm:text-lg font-bold text-black mb-2 tracking-tight"
                     style={{
-                      fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                      fontWeight: 600,
+                      fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                      fontWeight: 700,
                     }}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-neutral-600 text-sm leading-relaxed font-normal">
+                  <p
+                    className="text-neutral-600 text-sm leading-relaxed font-normal"
+                    style={{
+                      fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                    }}
+                  >
                     {item.description}
                   </p>
                 </div>

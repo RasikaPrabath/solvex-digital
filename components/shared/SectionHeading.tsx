@@ -28,7 +28,7 @@ export default function SectionHeading({
                 : "bg-neutral-100 text-neutral-800 border border-neutral-200/60"
             }`}
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
             }}
           >
             {eyebrow}
@@ -36,21 +36,21 @@ export default function SectionHeading({
         </div>
       )}
       <h2
-        className={`${titleColor} text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2]`}
+        className={`${titleColor} text-2xl sm:text-3xl font-bold tracking-[-0.025em] leading-[1.25]`}
         style={{
-          fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-          fontWeight: 600,
+          fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
+          fontWeight: 700,
         }}
       >
         {title}
       </h2>
       {subtitle && (
         <p
-          className={`mt-2 text-sm sm:text-base max-w-2xl leading-relaxed font-normal ${subtitleColor} ${
+          className={`mt-2.5 text-sm sm:text-base max-w-2xl leading-relaxed font-normal ${subtitleColor} ${
             align === "center" ? "mx-auto" : ""
           }`}
           style={{
-            fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+            fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
           }}
         >
           {subtitle}

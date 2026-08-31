@@ -16,21 +16,26 @@ export default function ProcessPage() {
           <span
             className="inline-block px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-neutral-100 text-neutral-800 border border-neutral-200/60 mb-2.5"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             }}
           >
             Delivery Methodology
           </span>
           <h1
-            className="text-3xl sm:text-4xl lg:text-[40px] font-semibold text-black tracking-[-0.025em] mb-4 leading-snug"
+            className="text-3xl sm:text-4xl lg:text-[40px] font-bold text-black tracking-[-0.03em] mb-4 leading-snug"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontWeight: 700,
             }}
           >
             How we engineer software
           </h1>
-          <p className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal">
+          <p
+            className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+            }}
+          >
             Predictable sprints, transparent checkpoints, and zero guesswork. Here is our end-to-end framework from strategic discovery to enterprise deployment.
           </p>
         </div>
@@ -48,17 +53,17 @@ export default function ProcessPage() {
                       <span
                         className="text-black text-xs sm:text-sm font-semibold"
                         style={{
-                          fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                          fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
                         }}
                       >
                         {String(step.number).padStart(2, "0")}
                       </span>
                     </div>
                     <h2
-                      className="text-lg sm:text-xl font-semibold text-black lg:mt-3 tracking-tight"
+                      className="text-lg sm:text-xl font-bold text-black lg:mt-3 tracking-tight"
                       style={{
-                        fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                        fontWeight: 600,
+                        fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                        fontWeight: 700,
                       }}
                     >
                       {step.title}

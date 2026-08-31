@@ -158,42 +158,56 @@ export default function Hero({
           transition={{ duration: 1.1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
           className="relative z-20 flex flex-col items-center text-center px-4 pointer-events-auto"
         >
-          {/* SOLVEX Brand Title */}
+          {/* SOLVEX Brand Title - Apple iOS SF Pro Typography with Simple Light Shadow */}
           <h1
-            className="select-none drop-shadow-2xl"
+            className="select-none uppercase"
             style={{
-              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
-              fontWeight: 800,
-              fontSize: "clamp(52px, 11vw, 150px)",
-              lineHeight: 0.95,
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Helvetica Neue', 'Inter', system-ui, sans-serif",
+              fontWeight: 600,
+              fontSize: "clamp(64px, 14vw, 195px)",
+              lineHeight: 0.92,
               letterSpacing: "-0.035em",
               color: "#ffffff",
-              textShadow: "0 10px 40px rgba(0,0,0,0.5)",
+              textShadow: "0 8px 30px rgba(0, 0, 0, 0.4)",
             }}
           >
             SOLVEX
           </h1>
 
           {/* Subtitle */}
-          <p className="text-neutral-300/90 text-sm sm:text-base md:text-[17px] max-w-xl mx-auto leading-relaxed mt-3 sm:mt-5 mb-7 font-normal tracking-wide drop-shadow">
+          <p
+            className="text-neutral-300/90 text-sm sm:text-base md:text-[17px] max-w-xl mx-auto leading-relaxed mt-3 sm:mt-5 mb-7 font-normal tracking-wide drop-shadow"
+            style={{
+              fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
+            }}
+          >
             Crafting bold digital experiences that help brands grow and stand out.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3.5">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6.5 py-2.5 bg-white hover:bg-neutral-100 text-black font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:shadow-[0_0_35px_rgba(255,255,255,0.35)] hover:-translate-y-0.5 group"
+              className="inline-flex items-center justify-center gap-2 px-6.5 py-2.5 bg-white hover:bg-neutral-100 text-black font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 shadow-[0_4px_25px_rgba(255,255,255,0.25)] hover:shadow-[0_6px_35px_rgba(255,255,255,0.4)] hover:-translate-y-0.5 group"
+              style={{
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
+              }}
             >
               <span>Start a Project</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
               href="/work"
-              className="inline-flex items-center justify-center gap-2 px-5.5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-medium text-xs sm:text-sm rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:border-white/40"
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/[0.14] hover:bg-white/[0.22] backdrop-blur-xl text-white border border-white/35 hover:border-white/65 font-medium text-xs sm:text-sm rounded-full transition-all duration-300 hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_6px_25px_rgba(255,255,255,0.18)] group"
+              style={{
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
+              }}
             >
               <span>Explore Portfolio</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-neutral-300 transition-colors group-hover:text-white" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
 
@@ -212,14 +226,23 @@ export default function Hero({
           >
             <div className="max-w-3xl mx-auto">
               <span
-                className="block text-[10px] sm:text-xs uppercase tracking-[0.25em] text-blue-400/80 mb-3"
-                style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontWeight: 600 }}
+                className="block text-[10px] sm:text-xs uppercase tracking-[0.25em] text-blue-400 mb-2.5"
+                style={{
+                  fontFamily:
+                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
+                  fontWeight: 500,
+                }}
               >
                 {item.label}
               </span>
               <p
-                className="text-white text-lg sm:text-2xl md:text-3xl leading-snug"
-                style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontWeight: 700, letterSpacing: "-0.02em" }}
+                className="text-neutral-100 text-lg sm:text-2xl md:text-3xl leading-snug"
+                style={{
+                  fontFamily:
+                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
+                  fontWeight: 400,
+                  letterSpacing: "-0.015em",
+                }}
               >
                 {item.text}
               </p>

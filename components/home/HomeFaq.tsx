@@ -41,7 +41,13 @@ export default function HomeFaq() {
   };
 
   return (
-    <section className="py-14 sm:py-20 bg-neutral-50/40 border-t border-neutral-100">
+    <motion.section
+      className="py-16 sm:py-24 bg-neutral-50/40 border-t border-neutral-100"
+      initial={{ opacity: 0, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+    >
       <div className="max-w-[960px] mx-auto px-6">
         <SectionHeading
           eyebrow="Questions & Answers"
@@ -54,15 +60,19 @@ export default function HomeFaq() {
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div
+              <motion.div
                 key={faq.question}
-                className="rounded-2xl border border-neutral-200/80 bg-white overflow-hidden transition-all duration-200 shadow-2xs hover:border-black/20"
+                initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.05, ease: [0.25, 1, 0.5, 1] }}
+                className="rounded-2xl border border-neutral-200/80 bg-white overflow-hidden transition-all duration-300 shadow-2xs hover:border-black/20 hover:shadow-md"
               >
                 <button
                   onClick={() => toggle(idx)}
                   className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 font-semibold text-black cursor-pointer"
                   style={{
-                    fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                    fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
                   }}
                 >
                   <span className="text-[15px] sm:text-base font-bold">{faq.question}</span>
@@ -80,17 +90,22 @@ export default function HomeFaq() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                     >
-                      <div className="px-6 pb-5 pt-1 text-neutral-600 text-sm leading-relaxed border-t border-neutral-100">
+                      <div
+                        className="px-6 pb-5 pt-1 text-neutral-600 text-sm leading-relaxed border-t border-neutral-100"
+                        style={{
+                          fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                        }}
+                      >
                         {faq.answer}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

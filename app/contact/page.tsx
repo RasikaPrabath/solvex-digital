@@ -17,21 +17,26 @@ export default function ContactPage() {
           <span
             className="inline-block px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-neutral-100 text-neutral-800 border border-neutral-200/60 mb-2.5"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             }}
           >
             Start an Engagement
           </span>
           <h1
-            className="text-3xl sm:text-4xl lg:text-[40px] font-semibold text-black tracking-[-0.025em] mb-4 leading-snug"
+            className="text-3xl sm:text-4xl lg:text-[40px] font-bold text-black tracking-[-0.03em] mb-4 leading-snug"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontWeight: 700,
             }}
           >
             Let&apos;s talk about your project
           </h1>
-          <p className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal">
+          <p
+            className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+            }}
+          >
             Fill out the consultation form below or reach out directly. No sales push — just a strategic discussion regarding your requirements and architecture.
           </p>
         </div>
@@ -46,10 +51,10 @@ export default function ContactPage() {
           <div className="lg:col-span-1">
             <div className="p-7 rounded-3xl border border-neutral-200/80 bg-neutral-50/50 sticky top-28 space-y-5">
               <h3
-                className="text-base font-semibold text-black tracking-tight"
+                className="text-base font-bold text-black tracking-tight"
                 style={{
-                  fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                  fontWeight: 600,
+                  fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+                  fontWeight: 700,
                 }}
               >
                 Direct Channels

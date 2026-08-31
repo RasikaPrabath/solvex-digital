@@ -153,14 +153,14 @@ export default function Hero({
 
         {/* Background — Mobile static single image / Desktop Canvas */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-          {/* Mobile Only: Single static frame image */}
+          {/* Mobile Only: Single static frame image (Laptop + Mobile Duo view) */}
           <div className="block md:hidden absolute inset-0 w-full h-full">
             <NextImage
-              src={`${framePrefix}001.${frameExtension}`}
+              src={`${framePrefix}020.${frameExtension}`}
               alt="Solvex Hero Background"
               fill
               priority
-              className="object-cover"
+              className="object-cover object-center"
               sizes="100vw"
             />
           </div>

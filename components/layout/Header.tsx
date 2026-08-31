@@ -28,10 +28,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-2xl border-b border-black/[0.06] shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
-          : "bg-white/90 backdrop-blur-xl border-b border-neutral-100/80"
+          ? "bg-black/30 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
+          : "bg-transparent backdrop-blur-none border-b border-transparent"
       }`}
     >
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-6">
@@ -39,18 +39,18 @@ export default function Header() {
         {/* Refined Lightweight Brand Logo */}
         <Link href="/" className="flex items-center gap-1 shrink-0 group">
           <span
-            className="text-[17px] sm:text-[19px] font-semibold text-black tracking-[-0.02em] transition-opacity group-hover:opacity-70"
+            className="text-[17px] sm:text-[19px] font-semibold text-white tracking-[-0.02em] transition-opacity group-hover:opacity-70"
             style={{
-              fontFamily: "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontWeight: 700,
             }}
           >
             Solvex
           </span>
-          <span className="w-1 h-1 rounded-full bg-black translate-y-[0.5px]" />
+          <span className="w-1 h-1 rounded-full bg-white/80 translate-y-[0.5px]" />
         </Link>
 
-        {/* Inline Horizontal Navbar Links (Directly visible on Mobile & Desktop) */}
+        {/* Inline Horizontal Navbar Links */}
         <nav className="flex items-center gap-1 sm:gap-2 md:gap-4 overflow-x-auto no-scrollbar py-1">
           {navLinks.map((link) => {
             const isActive =
@@ -60,10 +60,10 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-[13px] transition-all duration-150 whitespace-nowrap shrink-0 ${
+                className={`px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-[13px] transition-all duration-200 whitespace-nowrap shrink-0 ${
                   isActive
-                    ? "bg-black text-white font-medium shadow-xs"
-                    : "text-neutral-600 hover:text-black hover:bg-neutral-100/80 font-normal"
+                    ? "bg-white/20 text-white font-medium backdrop-blur-sm"
+                    : "text-white hover:bg-white/10 font-normal"
                 }`}
                 style={{
                   fontFamily:
@@ -80,7 +80,7 @@ export default function Header() {
         <div className="shrink-0 hidden md:block">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center gap-1.5 px-4 py-1.5 sm:px-4.5 sm:py-2 bg-black hover:bg-neutral-800 text-white font-medium text-xs sm:text-xs rounded-full transition-all duration-200 shadow-xs hover:-translate-y-0.5 group"
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-1.5 sm:px-4.5 sm:py-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white border border-white/20 font-medium text-xs sm:text-xs rounded-full transition-all duration-200 hover:-translate-y-0.5 group"
             style={{
               fontFamily:
                 "'Inter Tight', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",

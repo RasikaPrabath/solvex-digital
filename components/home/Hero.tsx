@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import NextImage from "next/image";
 
 /* ── Scroll-reveal detail items ── */
 const details = [
@@ -39,6 +40,16 @@ export default function Hero({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -46,10 +57,6 @@ export default function Hero({
   });
 
   const currentFrameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
-
-  /* Subtitle & CTAs fade out, SOLVEX stays */
-  const subContentOpacity = useTransform(scrollYProgress, [0, 0.2, 0.35], [1, 1, 0]);
-  const subContentY = useTransform(scrollYProgress, [0, 0.35], [0, -30]);
 
   /* Detail text blocks fade in at different scroll milestones */
   const d1Opacity = useTransform(scrollYProgress, [0.3, 0.4, 0.48, 0.52], [0, 1, 1, 0]);
@@ -71,8 +78,12 @@ export default function Hero({
     { opacity: d4Opacity, y: d4Y },
   ];
 
-  // 1. Preload frames
+  // 1. Preload frames (Desktop only - skips downloading 60 frames on mobile)
   useEffect(() => {
+    if (isMobile) {
+      imagesRef.current = [];
+      return;
+    }
     const loadedImages: HTMLImageElement[] = [];
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
@@ -80,10 +91,11 @@ export default function Hero({
       loadedImages.push(img);
     }
     imagesRef.current = loadedImages;
-  }, [frameCount, framePrefix, frameExtension]);
+  }, [frameCount, framePrefix, frameExtension, isMobile]);
 
-  // 2. Canvas render loop
+  // 2. Canvas render loop (Desktop only)
   useEffect(() => {
+    if (isMobile) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -129,27 +141,43 @@ export default function Hero({
 
     animationId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animationId);
-  }, [currentFrameIndex, frameCount]);
+  }, [currentFrameIndex, frameCount, isMobile]);
 
   return (
     <section
       ref={containerRef}
-      className="relative bg-black select-none overflow-clip"
-      style={{ height: "450vh" }}
+      className="relative bg-black select-none overflow-clip h-screen md:h-[450vh]"
     >
       {/* ── Sticky Fullscreen Stage ── */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center z-10">
 
-        {/* 3D Canvas Background — Butter-smooth dissolve */}
-        <motion.div
-          initial={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 1.4, ease: [0.25, 1, 0.5, 1] }}
-          className="absolute inset-0 w-full h-full pointer-events-none z-0"
-        >
-          <canvas ref={canvasRef} className="w-full h-full object-cover" />
+        {/* Background — Mobile static single image / Desktop Canvas */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          {/* Mobile Only: Single static frame image */}
+          <div className="block md:hidden absolute inset-0 w-full h-full">
+            <NextImage
+              src={`${framePrefix}001.${frameExtension}`}
+              alt="Solvex Hero Background"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+
+          {/* Desktop Only: 3D Canvas Background */}
+          <motion.div
+            initial={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, ease: [0.25, 1, 0.5, 1] }}
+            className="hidden md:block absolute inset-0 w-full h-full"
+          >
+            <canvas ref={canvasRef} className="w-full h-full object-cover" />
+          </motion.div>
+
+          {/* Gradient Overlay for high-contrast crisp text */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/60 pointer-events-none" />
-        </motion.div>
+        </div>
 
         {/* ── ALL HERO CONTENT — SILKY SMOOTH BUTTER ENTRANCE ── */}
         <motion.div
@@ -158,7 +186,7 @@ export default function Hero({
           transition={{ duration: 1.1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
           className="relative z-20 flex flex-col items-center text-center px-4 pointer-events-auto"
         >
-          {/* SOLVEX Brand Title - Apple iOS SF Pro Typography with Simple Light Shadow */}
+          {/* SOLVEX Brand Title - Apple iOS SF Pro Typography */}
           <h1
             className="select-none uppercase"
             style={{
@@ -217,38 +245,40 @@ export default function Hero({
           </div>
         </motion.div>
 
-        {/* ── SCROLL-REVEAL DETAIL TEXTS ── */}
-        {details.map((item, i) => (
-          <motion.div
-            key={item.label}
-            style={{ opacity: detailAnimations[i].opacity, y: detailAnimations[i].y }}
-            className="absolute z-20 bottom-[15%] left-0 right-0 px-6 sm:px-12 md:px-20 pointer-events-none"
-          >
-            <div className="max-w-3xl mx-auto">
-              <span
-                className="block text-[10px] sm:text-xs uppercase tracking-[0.25em] text-blue-400 mb-2.5"
-                style={{
-                  fontFamily:
-                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
-                  fontWeight: 500,
-                }}
-              >
-                {item.label}
-              </span>
-              <p
-                className="text-neutral-100 text-lg sm:text-2xl md:text-3xl leading-snug"
-                style={{
-                  fontFamily:
-                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
-                  fontWeight: 400,
-                  letterSpacing: "-0.015em",
-                }}
-              >
-                {item.text}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+        {/* ── SCROLL-REVEAL DETAIL TEXTS (Desktop only) ── */}
+        <div className="hidden md:block">
+          {details.map((item, i) => (
+            <motion.div
+              key={item.label}
+              style={{ opacity: detailAnimations[i].opacity, y: detailAnimations[i].y }}
+              className="absolute z-20 bottom-[15%] left-0 right-0 px-6 sm:px-12 md:px-20 pointer-events-none"
+            >
+              <div className="max-w-3xl mx-auto">
+                <span
+                  className="block text-[10px] sm:text-xs uppercase tracking-[0.25em] text-blue-400 mb-2.5"
+                  style={{
+                    fontFamily:
+                      "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
+                    fontWeight: 500,
+                  }}
+                >
+                  {item.label}
+                </span>
+                <p
+                  className="text-neutral-100 text-lg sm:text-2xl md:text-3xl leading-snug"
+                  style={{
+                    fontFamily:
+                      "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
+                    fontWeight: 400,
+                    letterSpacing: "-0.015em",
+                  }}
+                >
+                  {item.text}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
       </div>
     </section>

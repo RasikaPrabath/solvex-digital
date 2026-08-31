@@ -140,58 +140,68 @@ export default function Hero({
       {/* ── Sticky Fullscreen Stage ── */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center z-10">
 
-        {/* 3D Canvas Background */}
-        <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        {/* 3D Canvas Background — Butter-smooth dissolve */}
+        <motion.div
+          initial={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.4, ease: [0.25, 1, 0.5, 1] }}
+          className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        >
           <canvas ref={canvasRef} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/60 pointer-events-none" />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/60 pointer-events-none" />
+        </motion.div>
 
-        {/* ── SOLVEX — ALWAYS VISIBLE ── */}
-        <div className="relative z-20 text-center pointer-events-none">
+        {/* ── ALL HERO CONTENT — SILKY SMOOTH BUTTER ENTRANCE ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16, filter: "blur(10px)", scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+          transition={{ duration: 1.1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+          className="relative z-20 flex flex-col items-center text-center px-4 pointer-events-auto"
+        >
+          {/* SOLVEX Brand Title */}
           <h1
-            className="select-none"
+            className="select-none drop-shadow-2xl"
             style={{
               fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
               fontWeight: 800,
               fontSize: "clamp(52px, 11vw, 150px)",
               lineHeight: 0.95,
-              letterSpacing: "-0.03em",
+              letterSpacing: "-0.035em",
               color: "#ffffff",
+              textShadow: "0 10px 40px rgba(0,0,0,0.5)",
             }}
           >
             SOLVEX
           </h1>
-        </div>
 
-        {/* ── SUBTITLE + CTAs — ALWAYS VISIBLE ── */}
-        <div
-          className="relative z-20 max-w-5xl mx-auto w-full text-center px-4 pointer-events-auto mt-3 sm:mt-5"
-        >
-          <p className="text-neutral-300 text-sm sm:text-base md:text-[17px] max-w-xl mx-auto leading-relaxed mb-7">
+          {/* Subtitle */}
+          <p className="text-neutral-300/90 text-sm sm:text-base md:text-[17px] max-w-xl mx-auto leading-relaxed mt-3 sm:mt-5 mb-7 font-normal tracking-wide drop-shadow">
             Crafting bold digital experiences that help brands grow and stand out.
           </p>
 
+          {/* CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white hover:bg-neutral-100 text-black font-medium text-xs sm:text-sm rounded-full transition-all duration-200 shadow-lg hover:-translate-y-0.5 group"
+              className="inline-flex items-center justify-center gap-2 px-6.5 py-2.5 bg-white hover:bg-neutral-100 text-black font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:shadow-[0_0_35px_rgba(255,255,255,0.35)] hover:-translate-y-0.5 group"
             >
               <span>Start a Project</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
               href="/work"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-medium text-xs sm:text-sm rounded-full transition-all duration-200 hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center gap-2 px-5.5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-medium text-xs sm:text-sm rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:border-white/40"
             >
               <span>Explore Portfolio</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-neutral-300" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-neutral-300 transition-colors group-hover:text-white" />
             </Link>
           </div>
 
-          <div className="mt-10 text-[11px] font-mono text-neutral-400/80 animate-bounce">
+          {/* Scroll indicator */}
+          <div className="mt-11 text-[11px] font-mono tracking-widest text-neutral-400/70 animate-bounce">
             ↓ SCROLL TO EXPLORE
           </div>
-        </div>
+        </motion.div>
 
         {/* ── SCROLL-REVEAL DETAIL TEXTS ── */}
         {details.map((item, i) => (

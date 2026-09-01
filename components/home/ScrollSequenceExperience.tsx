@@ -2,259 +2,216 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
-import { ArrowRight, Layers, ShieldCheck, Cpu } from "lucide-react";
+import { ArrowRight, Code2, Layout, Rocket, Terminal, Sparkles, CheckCircle2, Play, Pause, Video } from "lucide-react";
 import Link from "next/link";
 
-interface ScrollSequenceExperienceProps {
-  frameCount?: number;
-  framePrefix?: string;
-  frameExtension?: string;
-}
-
-export default function ScrollSequenceExperience({
-  frameCount = 60,
-  framePrefix = "/images/sequence/frame_",
-  frameExtension = "webp",
-}: ScrollSequenceExperienceProps) {
+export default function ScrollSequenceExperience() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
-  const imagesRef = useRef<HTMLImageElement[]>([]);
 
-  // Track scroll through the 350vh tall container
+  // Track scroll through the container
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Calculate current frame index (0 to frameCount - 1)
-  const currentFrameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
+  // Clean opacity curves for narrative cards
+  const stage1Opacity = useTransform(scrollYProgress, [0, 0.22, 0.32], [1, 1, 0]);
+  const stage1Y = useTransform(scrollYProgress, [0, 0.22, 0.32], [0, 0, -20]);
 
-  // Clean non-overlapping opacity curves for the 3 stages
-  const stage1Opacity = useTransform(scrollYProgress, [0, 0.18, 0.28], [1, 1, 0]);
-  const stage1Y = useTransform(scrollYProgress, [0, 0.18, 0.28], [0, 0, -20]);
+  const stage2Opacity = useTransform(scrollYProgress, [0.36, 0.52, 0.66], [0, 1, 0]);
+  const stage2Y = useTransform(scrollYProgress, [0.36, 0.52, 0.66], [20, 0, -20]);
 
-  const stage2Opacity = useTransform(scrollYProgress, [0.34, 0.48, 0.62], [0, 1, 0]);
-  const stage2Y = useTransform(scrollYProgress, [0.34, 0.48, 0.62], [20, 0, -20]);
+  const stage3Opacity = useTransform(scrollYProgress, [0.72, 0.88, 1], [0, 1, 1]);
+  const stage3Y = useTransform(scrollYProgress, [0.72, 0.88, 1], [20, 0, 0]);
 
-  const stage3Opacity = useTransform(scrollYProgress, [0.70, 0.85, 1], [0, 1, 1]);
-  const stage3Y = useTransform(scrollYProgress, [0.70, 0.85, 1], [20, 0, 0]);
-
-  // Progress Bar Width
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-  // 1. Preload all 60 frames immediately
+  // Synchronize video timeline smoothly with scroll position
   useEffect(() => {
-    let isMounted = true;
-    const loadedImages: HTMLImageElement[] = [];
+    const video = videoRef.current;
+    if (!video) return;
 
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      const paddedIndex = String(i).padStart(3, "0");
-      img.src = `${framePrefix}${paddedIndex}.${frameExtension}`;
-
-      img.onload = () => {
-        if (!isMounted) return;
-        setImagesLoaded((prev) => prev + 1);
-      };
-
-      loadedImages.push(img);
-    }
-
-    imagesRef.current = loadedImages;
-
-    return () => {
-      isMounted = false;
+    // Ensure video is ready
+    const handleLoaded = () => {
+      video.playbackRate = 1.0;
     };
-  }, [frameCount, framePrefix, frameExtension]);
+    video.addEventListener("loadedmetadata", handleLoaded);
 
-  // 2. High-performance Canvas Renderer
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationId: number;
-
-    const render = () => {
-      const progress = scrollYProgress.get();
-      const frame = Math.min(
-        Math.max(0, Math.floor(currentFrameIndex.get())),
-        frameCount - 1
-      );
-
+    const unsubscribe = scrollYProgress.on("change", (progress) => {
       // Update active timeline pill
       if (progress < 0.33) setActiveStep(0);
       else if (progress < 0.66) setActiveStep(1);
       else setActiveStep(2);
 
-      // Sync canvas resolution with display size & DPR
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const targetW = Math.round(rect.width * dpr);
-      const targetH = Math.round(rect.height * dpr);
-
-      if (canvas.width !== targetW || canvas.height !== targetH) {
-        canvas.width = targetW;
-        canvas.height = targetH;
-      }
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Find the best available frame (target frame or closest loaded frame)
-      let targetImg: HTMLImageElement | null = null;
-      if (
-        imagesRef.current[frame] &&
-        imagesRef.current[frame].complete &&
-        imagesRef.current[frame].naturalWidth > 0
-      ) {
-        targetImg = imagesRef.current[frame];
-      } else {
-        // Fallback to first available loaded frame
-        for (let i = 0; i < imagesRef.current.length; i++) {
-          if (
-            imagesRef.current[i] &&
-            imagesRef.current[i].complete &&
-            imagesRef.current[i].naturalWidth > 0
-          ) {
-            targetImg = imagesRef.current[i];
-            break;
-          }
+      // Scrub video time with smooth scroll sync when video is loaded
+      if (video.duration && !isNaN(video.duration)) {
+        // Target time based on scroll
+        const targetTime = progress * video.duration;
+        // Damp / smooth seek
+        if (Math.abs(video.currentTime - targetTime) > 0.05) {
+          video.currentTime = targetTime;
         }
       }
-
-      if (targetImg && targetImg.naturalWidth > 0) {
-        const imgW = targetImg.naturalWidth;
-        const imgH = targetImg.naturalHeight;
-
-        // Cover widescreen display cleanly without distortion
-        const hRatio = canvas.width / imgW;
-        const vRatio = canvas.height / imgH;
-        const ratio = Math.max(hRatio, vRatio);
-
-        const drawW = imgW * ratio;
-        const drawH = imgH * ratio;
-        const drawX = (canvas.width - drawW) / 2;
-        const drawY = (canvas.height - drawH) / 2;
-
-        // Draw full-size landscape frame
-        ctx.drawImage(targetImg, drawX, drawY, drawW, drawH);
-      }
-
-      animationId = requestAnimationFrame(render);
-    };
-
-    animationId = requestAnimationFrame(render);
+    });
 
     return () => {
-      cancelAnimationFrame(animationId);
+      video.removeEventListener("loadedmetadata", handleLoaded);
+      unsubscribe();
     };
-  }, [currentFrameIndex, scrollYProgress, frameCount]);
+  }, [scrollYProgress]);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isPlaying) {
+      video.pause();
+      setIsPlaying(false);
+    } else {
+      video.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[340vh] bg-black select-none overflow-clip border-y border-neutral-800"
+      className="relative h-[340vh] bg-black select-none overflow-clip border-y border-neutral-900"
     >
-      {/* Sticky Fullscreen Stage */}
+      {/* Sticky Fullscreen Video Stage */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between p-4 sm:p-8 md:p-10 z-10">
         
         {/* Top Header Bar */}
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between z-30 pt-1 sm:pt-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-950/80 backdrop-blur-xl border border-neutral-800/90 text-xs font-medium text-white shadow-xl">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span className="font-mono uppercase tracking-wider text-[11px] text-neutral-300">
-              Full-Width 3D Mockup Experience
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-neutral-950/85 backdrop-blur-xl border border-neutral-800 text-xs font-medium text-white shadow-2xl">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]" />
+            <span className="font-mono uppercase tracking-wider text-[11px] text-neutral-200">
+              Live Developer Video Stream // 1080p Full HD
             </span>
           </div>
 
           {/* Timeline Step Pills */}
-          <div className="hidden sm:flex items-center gap-2 bg-neutral-950/80 backdrop-blur-xl px-3.5 py-1.5 rounded-full border border-neutral-800/90 text-xs">
-            {["01. Web Platform", "02. Mobile Duo", "03. Enterprise Launch"].map(
-              (label, idx) => (
+          <div className="hidden sm:flex items-center gap-2 bg-neutral-950/85 backdrop-blur-xl px-3.5 py-1.5 rounded-full border border-neutral-800 text-xs">
+            {[
+              { label: "01. Architecture & Codebase", icon: Code2 },
+              { label: "02. Responsive Dark UI", icon: Layout },
+              { label: "03. Production Deployment", icon: Rocket },
+            ].map((step, idx) => {
+              const Icon = step.icon;
+              return (
                 <span
-                  key={label}
-                  className={`px-3 py-1 rounded-full transition-all duration-300 font-mono text-[11px] ${
+                  key={step.label}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-all duration-300 font-mono text-[11px] ${
                     activeStep === idx
-                      ? "bg-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(54,84,255,0.6)]"
+                      ? "bg-gradient-to-r from-cyan-500/20 to-blue-600/30 text-cyan-300 font-semibold border border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
                       : "text-neutral-400 hover:text-neutral-200"
                   }`}
                 >
-                  {label}
+                  <Icon className="w-3 h-3" />
+                  {step.label}
                 </span>
-              )
-            )}
+              );
+            })}
           </div>
+
+          {/* Play/Pause Video Controls */}
+          <button
+            onClick={togglePlay}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/80 text-xs font-mono transition-all pointer-events-auto"
+            title={isPlaying ? "Pause Video" : "Play Video"}
+          >
+            {isPlaying ? (
+              <>
+                <Pause className="w-3 h-3 text-cyan-400" />
+                <span className="hidden md:inline">PAUSE</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" />
+                <span className="hidden md:inline">PLAY</span>
+              </>
+            )}
+          </button>
         </div>
 
-        {/* Full-bleed 16:9 Widescreen Landscape 3D Canvas Stage */}
+        {/* Real Continuous Developer Coding Video Layer */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-          <canvas
-            ref={canvasRef}
-            className="w-full h-full object-cover"
+          <video
+            ref={videoRef}
+            src="/images/developer-coding.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover scale-[1.03] transition-transform duration-700"
           />
-          {/* Subtle gradient vignette at top and bottom to blend with content */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60 pointer-events-none" />
+
+          {/* Dark Cyberpunk Ambient Overlays & Vignettes */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/75 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08),rgba(0,0,0,0.85))] pointer-events-none" />
+          
+          {/* Subtle Cyber Grid Lines */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
         </div>
 
-        {/* Floating Narrative Content Cards (Positioned at bottom-left/center to never block the 3D product) */}
+        {/* Floating Narrative Content Cards */}
         <div className="relative z-20 max-w-7xl mx-auto w-full px-4 mb-4 sm:mb-8 pointer-events-none">
-          <div className="relative min-h-[140px] flex items-end">
+          <div className="relative min-h-[145px] flex items-end">
             
             {/* Stage 01 */}
             <motion.div
               style={{ opacity: stage1Opacity, y: stage1Y }}
-              className="max-w-md bg-neutral-900/80 backdrop-blur-xl border border-neutral-800/90 p-5 rounded-2xl shadow-2xl"
+              className="max-w-md bg-neutral-950/85 backdrop-blur-2xl border border-neutral-800/90 p-5 sm:p-6 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.85)] border-l-4 border-l-cyan-500"
             >
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-mono font-semibold tracking-wider uppercase mb-2">
-                <Layers className="w-3 h-3" /> Stage 01 // SaaS & Web Platform
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-mono font-semibold tracking-wider uppercase mb-2.5">
+                <Code2 className="w-3 h-3" /> Stage 01 // Handcrafted Code
               </div>
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-1.5">
-                Modern Web Architecture
+                Real-Time Code Engineering
               </h2>
               <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-                Ultra-fast, responsive web applications engineered with precision design and real-time data sync.
+                Watch every component being crafted live. Clean Next.js server components, modular TypeScript logic, and custom micro-interactions.
               </p>
             </motion.div>
 
             {/* Stage 02 */}
             <motion.div
               style={{ opacity: stage2Opacity, y: stage2Y }}
-              className="absolute left-0 max-w-md bg-neutral-900/80 backdrop-blur-xl border border-neutral-800/90 p-5 rounded-2xl shadow-2xl"
+              className="absolute left-0 max-w-md bg-neutral-950/85 backdrop-blur-2xl border border-neutral-800/90 p-5 sm:p-6 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.85)] border-l-4 border-l-purple-500"
             >
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-mono font-semibold tracking-wider uppercase mb-2">
-                <Cpu className="w-3 h-3" /> Stage 02 // Multi-Device Duo
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-mono font-semibold tracking-wider uppercase mb-2.5">
+                <Sparkles className="w-3 h-3" /> Stage 02 // Dark Mode UI & Testing
               </div>
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-1.5">
-                Mobile & Desktop Harmony
+                Multi-Monitor Precision
               </h2>
               <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-                Native performance on iOS, Android, and web with unified state management and cloud backend.
+                Simultaneous multi-screen debugging, browser devtools inspection, and responsive design testing for flawless execution.
               </p>
             </motion.div>
 
             {/* Stage 03 */}
             <motion.div
               style={{ opacity: stage3Opacity, y: stage3Y }}
-              className="absolute left-0 max-w-md bg-neutral-900/80 backdrop-blur-xl border border-neutral-800/90 p-5 rounded-2xl shadow-2xl pointer-events-auto"
+              className="absolute left-0 max-w-md bg-neutral-950/85 backdrop-blur-2xl border border-neutral-800/90 p-5 sm:p-6 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.85)] border-l-4 border-l-emerald-500 pointer-events-auto"
             >
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono font-semibold tracking-wider uppercase mb-2">
-                <ShieldCheck className="w-3 h-3" /> Stage 03 // Enterprise Flagship
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono font-semibold tracking-wider uppercase mb-2.5">
+                <CheckCircle2 className="w-3 h-3" /> Stage 03 // Production Deployed
               </div>
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-1.5">
-                Complete Digital Ecosystem
+                Ready for the World
               </h2>
               <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed mb-4">
-                Scalable cloud infrastructure, automated CI/CD pipelines, and high-impact user experiences.
+                Automated CI/CD pipelines, zero-downtime edge caching, and 100/100 Lighthouse performance delivered directly to production.
               </p>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-full shadow-[0_0_20px_rgba(54,84,255,0.5)] transition-all group"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-semibold rounded-full shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all group"
               >
-                <span>Start Your Project</span>
+                <span>Start Your Web Project</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
@@ -264,15 +221,21 @@ export default function ScrollSequenceExperience({
 
         {/* Bottom Interactive Scroll Progress Indicator */}
         <div className="max-w-xl mx-auto w-full z-30 pb-1 flex flex-col items-center gap-1.5">
-          <div className="w-full bg-neutral-800/90 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-neutral-900/90 border border-neutral-800/60 h-1.5 rounded-full overflow-hidden">
             <motion.div
               style={{ width: progressWidth }}
-              className="h-full bg-gradient-to-r from-blue-500 via-indigo-400 to-emerald-400 rounded-full"
+              className="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-emerald-400 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.5)]"
             />
           </div>
           <div className="flex items-center justify-between w-full text-[10px] font-mono text-neutral-400">
-            <span>SCROLL TO EXPLORE</span>
-            <span>60 REAL 3D FRAMES</span>
+            <span className="flex items-center gap-1 text-cyan-400">
+              <Terminal className="w-3 h-3" />
+              SCROLL TO SCRUB VIDEO
+            </span>
+            <span className="flex items-center gap-1 text-neutral-400">
+              <Video className="w-3 h-3 text-emerald-400" />
+              REAL DEVELOPER FOOTAGE // DARK VIBE
+            </span>
           </div>
         </div>
 

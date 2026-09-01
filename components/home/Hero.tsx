@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import NextImage from "next/image";
 
 /* ── Scroll-reveal detail items ── */
 const details = [
@@ -25,14 +26,29 @@ const details = [
   },
 ];
 
-export default function Hero() {
+interface HeroProps {
+  frameCount?: number;
+  framePrefix?: string;
+  frameExtension?: string;
+}
+
+export default function Hero({
+  frameCount = 60,
+  framePrefix = "/images/sequence/frame_",
+  frameExtension = "webp",
+}: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
+
+  // Calculate current frame index (0 to frameCount - 1)
+  const currentFrameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
 
   // Fade out hero title/buttons during scroll
   const heroContentOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -59,27 +75,104 @@ export default function Hero() {
     { opacity: d4Opacity, y: d4Y },
   ];
 
-  // Scrub video playback time smoothly with scroll
+  // 1. Preload all 60 video frames immediately
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    let isMounted = true;
+    const loadedImages: HTMLImageElement[] = [];
 
-    // Start video playback
-    video.play().catch(() => {});
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image();
+      const paddedIndex = String(i).padStart(3, "0");
+      img.src = `${framePrefix}${paddedIndex}.${frameExtension}`;
 
-    const unsubscribe = scrollYProgress.on("change", (progress) => {
-      if (video.duration && !isNaN(video.duration)) {
-        const targetTime = progress * video.duration;
-        if (Math.abs(video.currentTime - targetTime) > 0.04) {
-          video.currentTime = targetTime;
-        }
-      }
-    });
+      img.onload = () => {
+        if (!isMounted) return;
+        setImagesLoaded((prev) => prev + 1);
+      };
+
+      loadedImages.push(img);
+    }
+
+    imagesRef.current = loadedImages;
 
     return () => {
-      unsubscribe();
+      isMounted = false;
     };
-  }, [scrollYProgress]);
+  }, [frameCount, framePrefix, frameExtension]);
+
+  // 2. High-performance Canvas Renderer
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+
+    const render = () => {
+      const frame = Math.min(
+        Math.max(0, Math.floor(currentFrameIndex.get())),
+        frameCount - 1
+      );
+
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
+      const targetW = Math.round(rect.width * dpr);
+      const targetH = Math.round(rect.height * dpr);
+
+      if (canvas.width !== targetW || canvas.height !== targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      let targetImg: HTMLImageElement | null = null;
+      if (
+        imagesRef.current[frame] &&
+        imagesRef.current[frame].complete &&
+        imagesRef.current[frame].naturalWidth > 0
+      ) {
+        targetImg = imagesRef.current[frame];
+      } else {
+        // Fallback to closest available frame
+        for (let i = 0; i < imagesRef.current.length; i++) {
+          if (
+            imagesRef.current[i] &&
+            imagesRef.current[i].complete &&
+            imagesRef.current[i].naturalWidth > 0
+          ) {
+            targetImg = imagesRef.current[i];
+            break;
+          }
+        }
+      }
+
+      if (targetImg && targetImg.naturalWidth > 0) {
+        const imgW = targetImg.naturalWidth;
+        const imgH = targetImg.naturalHeight;
+
+        const hRatio = canvas.width / imgW;
+        const vRatio = canvas.height / imgH;
+        const ratio = Math.max(hRatio, vRatio);
+
+        const drawW = imgW * ratio;
+        const drawH = imgH * ratio;
+        const drawX = (canvas.width - drawW) / 2;
+        const drawY = (canvas.height - drawH) / 2;
+
+        ctx.drawImage(targetImg, drawX, drawY, drawW, drawH);
+      }
+
+      animationId = requestAnimationFrame(render);
+    };
+
+    animationId = requestAnimationFrame(render);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
+  }, [currentFrameIndex, frameCount]);
 
   return (
     <section
@@ -89,20 +182,14 @@ export default function Hero() {
       {/* ── Sticky Fullscreen Stage ── */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center z-10">
 
-        {/* Real Continuous Developer Coding Video Layer */}
+        {/* Real Consistent Developer Video Frames (Hardware Accelerated Canvas) */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-          <video
-            ref={videoRef}
-            src="/images/developer-coding.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover scale-[1.02]"
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full object-cover"
           />
 
-          {/* Deep Dark Ambient Vignettes for Contrast */}
+          {/* Deep Dark Ambient Vignettes for high-contrast typography */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/75 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.06),rgba(0,0,0,0.85))] pointer-events-none" />
@@ -118,7 +205,7 @@ export default function Hero() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-950/80 backdrop-blur-xl border border-neutral-800 text-xs font-medium text-white shadow-2xl mb-4">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
             <span className="font-mono uppercase tracking-wider text-[11px] text-neutral-300">
-              SOLVEX DIGITAL // LIVE CODE ARCHITECTURE
+              SOLVEX DIGITAL // 60 CONSISTENT FRAMES
             </span>
           </div>
 

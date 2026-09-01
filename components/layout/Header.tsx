@@ -14,57 +14,87 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
+import { motion } from "framer-motion";
+
 export default function Header() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
+  const [heroActive, setHeroActive] = useState(true);
 
   // Home page has a dark hero canvas background
   const isDarkHero = pathname === "/";
 
   useEffect(() => {
+    if (!isDarkHero) {
+      setHeroActive(true);
+      return;
+    }
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const heroEl = document.getElementById("hero-section");
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        // Visible while the hero bottom is still inside/above viewport
+        setHeroActive(rect.bottom > 80);
+      } else {
+        const heroHeight = window.innerHeight * 3.5;
+        setHeroActive(window.scrollY < heroHeight);
+      }
     };
+
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [isDarkHero]);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
         isDarkHero
-          ? scrolled
-            ? "bg-black/60 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
-            : "bg-transparent backdrop-blur-none border-b border-transparent"
-          : scrolled
-          ? "bg-white/90 backdrop-blur-2xl border-b border-neutral-200/80 shadow-[0_4px_25px_rgba(0,0,0,0.04)]"
-          : "bg-white/85 backdrop-blur-xl border-b border-neutral-200/60"
+          ? heroActive
+            ? "translate-y-0 opacity-100 bg-neutral-950/75 backdrop-blur-xl border-b border-white/[0.08]"
+            : "-translate-y-full opacity-0 pointer-events-none"
+          : "translate-y-0 opacity-100 bg-white/90 backdrop-blur-md border-b border-neutral-200/70"
       }`}
     >
-      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-6">
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between gap-6">
         
-        {/* Refined Lightweight Brand Logo */}
-        <Link href="/" className="flex items-center gap-1 shrink-0 group">
-          <span
-            className={`text-[17px] sm:text-[19px] font-bold tracking-[-0.02em] transition-opacity group-hover:opacity-70 ${
-              isDarkHero ? "text-white" : "text-black"
-            }`}
-            style={{
-              fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
-              fontWeight: 800,
-            }}
-          >
-            Solvex
-          </span>
-          <span
-            className={`w-1 h-1 rounded-full translate-y-[0.5px] ${
-              isDarkHero ? "bg-white" : "bg-black"
-            }`}
-          />
-        </Link>
+        {/* Brand Logo with Smooth Entrance */}
+        <motion.div
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <Link href="/" className="flex items-center gap-1.5 shrink-0 group">
+            <span
+              className={`text-xl sm:text-2xl font-bold tracking-tight transition-opacity group-hover:opacity-80 ${
+                isDarkHero ? "text-white" : "text-neutral-950"
+              }`}
+              style={{
+                fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
+                fontWeight: 800,
+              }}
+            >
+              Solvex
+            </span>
+            <span
+              className={`w-1.5 h-1.5 rounded-full translate-y-[1px] ${
+                isDarkHero ? "bg-cyan-400 shadow-[0_0_8px_#22d3ee]" : "bg-black"
+              }`}
+            />
+          </Link>
+        </motion.div>
 
-        {/* Inline Horizontal Navbar Links */}
-        <nav className="flex items-center gap-1 sm:gap-2 md:gap-4 overflow-x-auto no-scrollbar py-1">
+        {/* Center Nav Links with Staggered Entrance */}
+        <motion.nav
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden md:flex items-center gap-8"
+        >
           {navLinks.map((link) => {
             const isActive =
               pathname === link.href ||
@@ -73,19 +103,19 @@ export default function Header() {
             let linkStyle = "";
             if (isDarkHero) {
               linkStyle = isActive
-                ? "bg-white/20 text-white font-semibold backdrop-blur-sm shadow-xs"
-                : "text-white/90 hover:text-white hover:bg-white/10 font-medium";
+                ? "text-white font-semibold after:scale-x-100"
+                : "text-neutral-300 hover:text-white font-medium after:scale-x-0 hover:after:scale-x-100";
             } else {
               linkStyle = isActive
-                ? "bg-black text-white font-semibold shadow-xs"
-                : "text-neutral-700 hover:text-black hover:bg-neutral-100/80 font-medium";
+                ? "text-black font-semibold after:scale-x-100"
+                : "text-neutral-600 hover:text-black font-medium after:scale-x-0 hover:after:scale-x-100";
             }
 
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-1 rounded-full text-xs sm:text-[13px] transition-all duration-200 whitespace-nowrap shrink-0 ${linkStyle}`}
+                className={`relative text-sm tracking-wide transition-colors duration-200 py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-transform after:duration-300 ${linkStyle}`}
                 style={{
                   fontFamily:
                     "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
@@ -95,16 +125,55 @@ export default function Header() {
               </Link>
             );
           })}
-        </nav>
+        </motion.nav>
 
-        {/* Right Action CTA */}
-        <div className="shrink-0 hidden md:block">
+        {/* Mobile Horizontal Links */}
+        <motion.nav
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex md:hidden items-center gap-2 overflow-x-auto no-scrollbar py-1"
+        >
+          {navLinks.map((link) => {
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/" && pathname.startsWith(link.href));
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-2.5 py-1 rounded-full text-xs whitespace-nowrap transition-all ${
+                  isDarkHero
+                    ? isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-neutral-300 hover:text-white"
+                    : isActive
+                    ? "bg-black text-white font-semibold"
+                    : "text-neutral-700 hover:text-black"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </motion.nav>
+
+        {/* Right Action CTA with Entrance & Hover Spring */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, x: 16 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.97 }}
+          className="shrink-0 hidden sm:block"
+        >
           <Link
             href="/contact"
-            className={`inline-flex items-center justify-center gap-1.5 px-4.5 py-1.5 sm:py-2 font-semibold text-xs sm:text-xs rounded-full transition-all duration-200 hover:-translate-y-0.5 group ${
+            className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 group ${
               isDarkHero
-                ? "bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white border border-white/20 shadow-xs"
-                : "bg-black hover:bg-neutral-800 text-white shadow-xs"
+                ? "bg-white hover:bg-neutral-100 text-black shadow-none"
+                : "bg-black hover:bg-neutral-800 text-white shadow-none"
             }`}
             style={{
               fontFamily:
@@ -112,9 +181,9 @@ export default function Header() {
             }}
           >
             <span>Start a Project</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </Link>
-        </div>
+        </motion.div>
 
       </div>
     </header>

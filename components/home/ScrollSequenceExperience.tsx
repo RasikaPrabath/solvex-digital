@@ -148,13 +148,13 @@ export default function ScrollSequenceExperience() {
             className="w-full h-full object-cover scale-[1.03] transition-transform duration-700"
           />
 
-          {/* Dark Cyberpunk Ambient Overlays & Vignettes */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/75 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08),rgba(0,0,0,0.85))] pointer-events-none" />
+          {/* Softened Ambient Overlays & Vignettes */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/45 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08),rgba(0,0,0,0.45))] pointer-events-none" />
           
           {/* Subtle Cyber Grid Lines */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b12_1px,transparent_1px),linear-gradient(to_bottom,#1e293b12_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
         </div>
 
         {/* Floating Narrative Content Cards */}

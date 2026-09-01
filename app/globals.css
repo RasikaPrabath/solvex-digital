@@ -53,6 +53,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Prevent Browser Extension / Translator White Highlights ── */
+font, font[style] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+header font,
+header a:not([class*="bg-white"]):not([class*="bg-black"]),
+header span:not([class*="bg-"]):not([class*="rounded-full"]) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
 /* ── Typography Scale ── */
 h1 {
   font-family: var(--font-display);

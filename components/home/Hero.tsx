@@ -4,27 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import NextImage from "next/image";
-
-/* ── Scroll-reveal detail items ── */
-const details = [
-  {
-    label: "Web Architecture & Code",
-    text: "High-performance Next.js full-stack applications engineered with clean TypeScript, modular components, and blazing-fast load times.",
-  },
-  {
-    label: "Interactive UI & Micro-Interactions",
-    text: "Ultra-responsive dark interfaces crafted with fluid animations, dynamic data charts, and precision design.",
-  },
-  {
-    label: "Cloud & DevOps Automation",
-    text: "Automated CI/CD deployment pipelines on edge networks achieving 100/100 Lighthouse performance scores.",
-  },
-  {
-    label: "Enterprise Launch & Scale",
-    text: "End-to-end digital solutions built to elevate modern brands, drive conversions, and scale effortlessly.",
-  },
-];
 
 interface HeroProps {
   frameCount?: number;
@@ -49,31 +28,6 @@ export default function Hero({
 
   // Calculate current frame index (0 to frameCount - 1)
   const currentFrameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
-
-  // Fade out hero title/buttons during scroll
-  const heroContentOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroContentY = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
-  const heroContentScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.96]);
-
-  /* Detail text blocks fade in at different scroll milestones */
-  const d1Opacity = useTransform(scrollYProgress, [0.22, 0.34, 0.42, 0.46], [0, 1, 1, 0]);
-  const d1Y = useTransform(scrollYProgress, [0.22, 0.34], [30, 0]);
-
-  const d2Opacity = useTransform(scrollYProgress, [0.46, 0.56, 0.64, 0.68], [0, 1, 1, 0]);
-  const d2Y = useTransform(scrollYProgress, [0.46, 0.56], [30, 0]);
-
-  const d3Opacity = useTransform(scrollYProgress, [0.68, 0.78, 0.86, 0.9], [0, 1, 1, 0]);
-  const d3Y = useTransform(scrollYProgress, [0.68, 0.78], [30, 0]);
-
-  const d4Opacity = useTransform(scrollYProgress, [0.9, 0.96, 1, 1], [0, 1, 1, 1]);
-  const d4Y = useTransform(scrollYProgress, [0.9, 0.96], [30, 0]);
-
-  const detailAnimations = [
-    { opacity: d1Opacity, y: d1Y },
-    { opacity: d2Opacity, y: d2Y },
-    { opacity: d3Opacity, y: d3Y },
-    { opacity: d4Opacity, y: d4Y },
-  ];
 
   // 1. Preload all 60 video frames immediately
   useEffect(() => {
@@ -176,6 +130,7 @@ export default function Hero({
 
   return (
     <section
+      id="hero-section"
       ref={containerRef}
       className="relative bg-black select-none overflow-clip h-[420vh]"
     >
@@ -189,28 +144,42 @@ export default function Hero({
             className="w-full h-full object-cover"
           />
 
-          {/* Deep Dark Ambient Vignettes for high-contrast typography */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/75 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.06),rgba(0,0,0,0.85))] pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b12_1px,transparent_1px),linear-gradient(to_bottom,#1e293b12_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+          {/* Softened Ambient Vignettes for clear visual presentation with good text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/45 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.06),rgba(0,0,0,0.45))] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b10_1px,transparent_1px),linear-gradient(to_bottom,#1e293b10_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
         </div>
 
         {/* ── HERO BRAND CONTENT (Fades out smoothly on scroll) ── */}
+        {/* ── HERO BRAND CONTENT ── */}
         <motion.div
-          style={{ opacity: heroContentOpacity, y: heroContentY, scale: heroContentScale }}
           className="relative z-20 flex flex-col items-center text-center px-4 pointer-events-auto"
         >
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-950/80 backdrop-blur-xl border border-neutral-800 text-xs font-medium text-white shadow-2xl mb-4">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
-            <span className="font-mono uppercase tracking-wider text-[11px] text-neutral-300">
-              SOLVEX DIGITAL // 60 CONSISTENT FRAMES
+          {/* Modern Premium Eyebrow Pill */}
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-neutral-950/60 hover:bg-neutral-950/80 border border-white/[0.12] backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] mb-5 transition-all duration-300"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-60" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
             </span>
-          </div>
+            <span
+              className="text-xs sm:text-[13px] font-medium tracking-wide text-neutral-200"
+              style={{ fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif" }}
+            >
+              Crafting Exceptional Digital Experiences
+            </span>
+          </motion.div>
 
           {/* SOLVEX Brand Title */}
-          <h1
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.92, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="select-none uppercase"
             style={{
               fontFamily:
@@ -224,70 +193,67 @@ export default function Hero({
             }}
           >
             SOLVEX
-          </h1>
+          </motion.h1>
 
           {/* Subtitle */}
-          <p
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="text-neutral-200 text-sm sm:text-base md:text-[17px] max-w-xl mx-auto leading-relaxed mt-3 sm:mt-5 mb-7 font-normal tracking-wide drop-shadow-md"
             style={{
               fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
             }}
           >
             Crafting bold digital experiences that help brands grow and stand out.
-          </p>
+          </motion.p>
 
-          {/* CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3.5">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6.5 py-2.5 bg-white hover:bg-neutral-100 text-black font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 shadow-[0_4px_25px_rgba(255,255,255,0.25)] hover:shadow-[0_6px_35px_rgba(255,255,255,0.4)] hover:-translate-y-0.5 group"
+          {/* CTAs with Smooth Entrance & Interactive Hover Animations */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-wrap items-center justify-center gap-3.5"
+          >
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
             >
-              <span>Start a Project</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="/work"
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/[0.14] hover:bg-white/[0.22] backdrop-blur-xl text-white border border-white/35 hover:border-white/65 font-medium text-xs sm:text-sm rounded-full transition-all duration-300 hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_6px_25px_rgba(255,255,255,0.18)] group"
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 px-6.5 py-2.5 bg-white hover:bg-neutral-100 text-black font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 group"
+              >
+                <span>Start a Project</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
             >
-              <span>Explore Portfolio</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
+              <Link
+                href="/work"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/[0.14] hover:bg-white/[0.22] backdrop-blur-xl text-white border border-white/35 hover:border-white/65 font-medium text-xs sm:text-sm rounded-full transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_6px_25px_rgba(255,255,255,0.18)] group"
+              >
+                <span>Explore Portfolio</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </motion.div>
+          </motion.div>
 
           {/* Scroll indicator */}
-          <div className="mt-10 text-[11px] font-mono tracking-widest text-cyan-400/90 animate-bounce">
-            ↓ SCROLL TO EXPLORE ARCHITECTURE
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="mt-10 text-[11px] font-mono tracking-widest text-cyan-400/90 animate-bounce"
+          >
+            ↓ SCROLL TO EXPLORE
+          </motion.div>
         </motion.div>
-
-        {/* ── SCROLL-REVEAL DETAIL NARRATIVE CARDS ── */}
-        <div className="w-full">
-          {details.map((item, i) => (
-            <motion.div
-              key={item.label}
-              style={{ opacity: detailAnimations[i].opacity, y: detailAnimations[i].y }}
-              className="absolute z-20 bottom-[12%] left-0 right-0 px-6 sm:px-12 md:px-20 pointer-events-none"
-            >
-              <div className="max-w-3xl mx-auto bg-neutral-950/80 backdrop-blur-2xl border border-neutral-800/90 p-6 sm:p-8 rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.9)] border-l-4 border-l-cyan-400">
-                <span
-                  className="block text-[11px] sm:text-xs uppercase tracking-[0.25em] text-cyan-400 font-mono font-semibold mb-2"
-                >
-                  0{i + 1} // {item.label}
-                </span>
-                <p
-                  className="text-neutral-100 text-lg sm:text-2xl md:text-3xl leading-snug font-medium"
-                  style={{
-                    fontFamily:
-                      "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Inter', system-ui, sans-serif",
-                    letterSpacing: "-0.015em",
-                  }}
-                >
-                  {item.text}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
 
       </div>
     </section>

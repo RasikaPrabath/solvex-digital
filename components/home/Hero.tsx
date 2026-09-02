@@ -20,6 +20,16 @@ export default function Hero({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -29,12 +39,13 @@ export default function Hero({
   // Calculate current frame index (0 to frameCount - 1)
   const currentFrameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
 
-  // 1. Preload all video frames immediately
+  // 1. Preload video frames (on mobile view: only frame 1 is loaded for performance)
   useEffect(() => {
     let isMounted = true;
     const loadedImages: HTMLImageElement[] = [];
+    const countToLoad = isMobile ? 1 : frameCount;
 
-    for (let i = 1; i <= frameCount; i++) {
+    for (let i = 1; i <= countToLoad; i++) {
       const img = new Image();
       const paddedIndex = String(i).padStart(3, "0");
       img.src = `${framePrefix}${paddedIndex}.${frameExtension}`;
@@ -52,7 +63,7 @@ export default function Hero({
     return () => {
       isMounted = false;
     };
-  }, [frameCount, framePrefix, frameExtension]);
+  }, [frameCount, framePrefix, frameExtension, isMobile]);
 
   // 2. High-performance Canvas Renderer
   useEffect(() => {
@@ -64,10 +75,13 @@ export default function Hero({
     let animationId: number;
 
     const render = () => {
-      const frame = Math.min(
-        Math.max(0, Math.floor(currentFrameIndex.get())),
-        frameCount - 1
-      );
+      // In mobile view: only show frame 0 (the exact specified frame)
+      const frame = isMobile
+        ? 0
+        : Math.min(
+            Math.max(0, Math.floor(currentFrameIndex.get())),
+            frameCount - 1
+          );
 
       const rect = canvas.getBoundingClientRect();
       const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
@@ -112,7 +126,11 @@ export default function Hero({
 
         const drawW = imgW * ratio;
         const drawH = imgH * ratio;
-        const drawX = (canvas.width - drawW) / 2;
+
+        // In mobile portrait view: shift crop to the left (focuses on the smiling girl & team from user's screenshot)
+        // In desktop view: centered
+        const focusFactor = isMobile ? 0.18 : 0.5;
+        const drawX = (canvas.width - drawW) * focusFactor;
         const drawY = (canvas.height - drawH) / 2;
 
         ctx.drawImage(targetImg, drawX, drawY, drawW, drawH);
@@ -126,13 +144,13 @@ export default function Hero({
     return () => {
       cancelAnimationFrame(animationId);
     };
-  }, [currentFrameIndex, frameCount]);
+  }, [currentFrameIndex, frameCount, isMobile]);
 
   return (
     <section
       id="hero-section"
       ref={containerRef}
-      className="relative bg-black select-none overflow-clip h-[420vh]"
+      className="relative bg-black select-none overflow-clip h-screen md:h-[420vh]"
     >
       {/* ── Sticky Fullscreen Stage ── */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center z-10">
@@ -178,16 +196,15 @@ export default function Hero({
             initial={{ opacity: 0, scale: 0.92, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="select-none uppercase"
+            className="select-none uppercase text-white"
             style={{
-              fontFamily:
-                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Helvetica Neue', 'Inter', system-ui, sans-serif",
-              fontWeight: 700,
-              fontSize: "clamp(64px, 14vw, 195px)",
-              lineHeight: 0.92,
-              letterSpacing: "-0.035em",
+              fontFamily: "var(--font-outfit), sans-serif",
+              fontWeight: 500,
+              fontSize: "clamp(48px, 10.5vw, 145px)",
+              lineHeight: 0.95,
+              letterSpacing: "0.03em",
               color: "#ffffff",
-              textShadow: "0 8px 30px rgba(0, 0, 0, 0.6)",
+              textShadow: "0 8px 32px rgba(0, 0, 0, 0.75)",
             }}
           >
             SOLVEX
@@ -198,7 +215,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-neutral-200 text-sm sm:text-base md:text-[17px] max-w-xl mx-auto leading-relaxed mt-3 sm:mt-5 mb-7 font-normal tracking-wide drop-shadow-md"
+            className="text-neutral-200 text-xs sm:text-sm md:text-[15px] max-w-md sm:max-w-lg mx-auto leading-relaxed mt-2.5 sm:mt-4 mb-6 font-normal tracking-wide drop-shadow-md"
             style={{
               fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
             }}

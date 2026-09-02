@@ -127,9 +127,9 @@ export default function Hero({
         const drawW = imgW * ratio;
         const drawH = imgH * ratio;
 
-        // In mobile portrait view: shift crop to the left (focuses on the smiling girl & team from user's screenshot)
+        // In mobile portrait view: focus on woman with papers, developer in white shirt, and colleague in blue shirt
         // In desktop view: centered
-        const focusFactor = isMobile ? 0.18 : 0.5;
+        const focusFactor = isMobile ? 0.46 : 0.5;
         const drawX = (canvas.width - drawW) * focusFactor;
         const drawY = (canvas.height - drawH) / 2;
 

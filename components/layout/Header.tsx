@@ -52,16 +52,27 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-        isDarkHero
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isDarkHero
           ? heroActive
-            ? "translate-y-0 opacity-100 bg-neutral-950/75 backdrop-blur-xl border-b border-white/[0.08]"
+            ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
           : "translate-y-0 opacity-100 bg-white/90 backdrop-blur-md border-b border-neutral-200/70"
-      }`}
+        }`}
     >
+      {/* Seamless progressive gradient & blur backdrop for dark hero (gradual fade out at bottom edge) */}
+      {isDarkHero && (
+        <div
+          className="absolute inset-x-0 top-0 h-24 sm:h-28 pointer-events-none -z-10 bg-gradient-to-b from-neutral-950/85 via-neutral-950/40 to-transparent backdrop-blur-md"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0) 100%)",
+            maskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0) 100%)",
+          }}
+        />
+      )}
       <div className="max-w-[1320px] mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between gap-6">
-        
+
         {/* Brand Logo with Smooth Entrance */}
         <motion.div
           initial={{ opacity: 0, x: -16 }}
@@ -70,9 +81,8 @@ export default function Header() {
         >
           <Link href="/" className="flex items-center gap-1.5 shrink-0 group">
             <span
-              className={`text-xl sm:text-2xl font-bold tracking-tight transition-opacity group-hover:opacity-80 ${
-                isDarkHero ? "text-white" : "text-neutral-950"
-              }`}
+              className={`text-xl sm:text-2xl font-bold tracking-tight transition-opacity group-hover:opacity-80 ${isDarkHero ? "text-white" : "text-neutral-950"
+                }`}
               style={{
                 fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",
                 fontWeight: 800,
@@ -81,9 +91,8 @@ export default function Header() {
               Solvex
             </span>
             <span
-              className={`w-1.5 h-1.5 rounded-full translate-y-[1px] ${
-                isDarkHero ? "bg-cyan-400 shadow-[0_0_8px_#22d3ee]" : "bg-black"
-              }`}
+              className={`w-1.5 h-1.5 rounded-full translate-y-[1px] ${isDarkHero ? "bg-cyan-400 shadow-[0_0_8px_#22d3ee]" : "bg-black"
+                }`}
             />
           </Link>
         </motion.div>
@@ -143,15 +152,14 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-2.5 py-1 rounded-full text-xs whitespace-nowrap transition-all ${
-                  isDarkHero
+                className={`px-2.5 py-1 rounded-full text-xs whitespace-nowrap transition-all ${isDarkHero
                     ? isActive
                       ? "bg-white/20 text-white font-semibold"
                       : "text-neutral-300 hover:text-white"
                     : isActive
-                    ? "bg-black text-white font-semibold"
-                    : "text-neutral-700 hover:text-black"
-                }`}
+                      ? "bg-black text-white font-semibold"
+                      : "text-neutral-700 hover:text-black"
+                  }`}
               >
                 {link.label}
               </Link>
@@ -170,11 +178,10 @@ export default function Header() {
         >
           <Link
             href="/contact"
-            className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 group ${
-              isDarkHero
+            className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 font-semibold text-xs sm:text-sm rounded-full transition-all duration-300 group ${isDarkHero
                 ? "bg-white hover:bg-neutral-100 text-black shadow-none"
                 : "bg-black hover:bg-neutral-800 text-white shadow-none"
-            }`}
+              }`}
             style={{
               fontFamily:
                 "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif",

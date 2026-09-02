@@ -12,7 +12,7 @@ interface HeroProps {
 }
 
 export default function Hero({
-  frameCount = 60,
+  frameCount = 120,
   framePrefix = "/images/sequence/frame_",
   frameExtension = "webp",
 }: HeroProps) {
@@ -29,7 +29,7 @@ export default function Hero({
   // Calculate current frame index (0 to frameCount - 1)
   const currentFrameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
 
-  // 1. Preload all 60 video frames immediately
+  // 1. Preload all video frames immediately
   useEffect(() => {
     let isMounted = true;
     const loadedImages: HTMLImageElement[] = [];
@@ -144,11 +144,9 @@ export default function Hero({
             className="w-full h-full object-cover"
           />
 
-          {/* Softened Ambient Vignettes for clear visual presentation with good text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/45 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.06),rgba(0,0,0,0.45))] pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b10_1px,transparent_1px),linear-gradient(to_bottom,#1e293b10_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+          {/* Subtle ambient overlay so video is bright & vivid while keeping text clear */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-black/10 pointer-events-none" />
         </div>
 
         {/* ── HERO BRAND CONTENT (Fades out smoothly on scroll) ── */}
